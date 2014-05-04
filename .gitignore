@@ -1,0 +1,12 @@
+/gradlew
+/settings.gradle
+/gradlew.bat
+/gradle/wrapper/gradle-wrapper.properties
+/gradle/wrapper/gradle-wrapper.jar
+/gradle.properties
+.gradle
+/local.properties
+/.idea/workspace.xml
+.DS_Store
+.idea
+*.jar
