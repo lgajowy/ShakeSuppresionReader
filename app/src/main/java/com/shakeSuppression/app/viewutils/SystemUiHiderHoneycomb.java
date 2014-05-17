@@ -1,4 +1,4 @@
-package com.shakeSuppression.app.util;
+package com.shakeSuppression.app.viewutils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

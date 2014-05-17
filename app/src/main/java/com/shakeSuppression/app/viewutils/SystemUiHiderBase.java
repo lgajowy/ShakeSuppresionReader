@@ -1,4 +1,4 @@
-package com.shakeSuppression.app.util;
+package com.shakeSuppression.app.viewutils;
 
 import android.app.Activity;
 import android.view.View;

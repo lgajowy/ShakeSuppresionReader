@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shakeSuppression.app" >
-    <uses-sdk android:minSdkVersion="11"/>
+    <uses-sdk android:minSdkVersion="14"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/book"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
