@@ -1,4 +1,4 @@
-package com.shakeSuppression.app.viewutils;
+package com.shakeSuppression.app.fullscreenview;
 
 import android.annotation.TargetApi;
 import android.os.Build;

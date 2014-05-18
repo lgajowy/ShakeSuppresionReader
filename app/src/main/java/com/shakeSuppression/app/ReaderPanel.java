@@ -5,38 +5,31 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
 
 import com.shakeSuppression.app.model.MovableBitmap;
+import com.shakeSuppression.app.view.utils.PanelSize;
 
-public class ReaderPanel extends SurfaceView implements
-        SurfaceHolder.Callback {
-
-    private static final String TAG = ReaderPanel.class.getSimpleName();
+public class ReaderPanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private MovableBitmap bookImage;
-    private Point panelSize;
 
     public ReaderPanel(Context context) {
         super(context);
         getHolder().addCallback(this);
 
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        panelSize = new Point();
-        display.getSize(panelSize);
-
-        bookImage = new MovableBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.book), panelSize.x / 2, panelSize.y / 2);
-
-        // to be able to handle events
-        setFocusable(true);
+        PanelSize readerPanelSize = new PanelSize(context);
+        bookImage = new MovableBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.book), readerPanelSize.x / 2, readerPanelSize.y / 2);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        drawMovableBitmap(holder);
+        Canvas canvas = holder.lockCanvas();
+        synchronized (holder) {
+            renderWholeCanvas(canvas);
+            holder.unlockCanvasAndPost(canvas);
+        }
     }
 
     @Override
@@ -49,16 +42,12 @@ public class ReaderPanel extends SurfaceView implements
 
     }
 
-    private void drawMovableBitmap(SurfaceHolder holder) {
-        Canvas canvas = holder.lockCanvas();
-        synchronized (holder) {
-            renderCanvas(canvas);
-        }
-        holder.unlockCanvasAndPost(canvas);
-    }
-
-    public void renderCanvas(Canvas canvas) {
+    public void renderWholeCanvas(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
         bookImage.draw(canvas);
+    }
+
+    public MovableBitmap getBitmap() {
+        return bookImage;
     }
 }
