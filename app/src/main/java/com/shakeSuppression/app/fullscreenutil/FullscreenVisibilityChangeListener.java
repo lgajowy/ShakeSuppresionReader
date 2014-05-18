@@ -1,10 +1,8 @@
-package com.shakeSuppression.app;
+package com.shakeSuppression.app.fullscreenutil;
 
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
-
-import com.shakeSuppression.app.util.SystemUiHider;
 
 public class FullscreenVisibilityChangeListener implements SystemUiHider.OnVisibilityChangeListener {
     private int controlsHeight;
@@ -13,9 +11,9 @@ public class FullscreenVisibilityChangeListener implements SystemUiHider.OnVisib
     private View controlsView;
     private View contentView;
 
-    private FullscreenViewController fullscreenViewController;
+    private FullscreenView fullscreenViewController;
 
-    public FullscreenVisibilityChangeListener(View controlsView, View contentView, FullscreenViewController fullscreenViewController) {
+    public FullscreenVisibilityChangeListener(View controlsView, View contentView, FullscreenView fullscreenViewController) {
         this.controlsView = controlsView;
         this.contentView = contentView;
         this.fullscreenViewController = fullscreenViewController;
