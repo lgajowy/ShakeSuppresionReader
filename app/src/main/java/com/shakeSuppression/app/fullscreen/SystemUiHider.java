@@ -1,4 +1,4 @@
-package com.shakeSuppression.app.fullscreenutil;
+package com.shakeSuppression.app.fullscreen;
 
 import android.app.Activity;
 import android.os.Build;
