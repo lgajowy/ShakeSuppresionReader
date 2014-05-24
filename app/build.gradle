@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+    compile 'com.joanzapata.pdfview:android-pdfview:1.0.+@aar'
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:support-v4:18.0.0'
 }
