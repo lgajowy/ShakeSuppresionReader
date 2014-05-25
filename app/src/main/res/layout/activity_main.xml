@@ -1,56 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff040802"
-    tools:context="com.shakeSuppression.app.ShakeSuppressionActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:layout_gravity="center_horizontal|top"
+    android:background="#ff8298af"
+    tools:context="com.shakeSuppression.app.ShakeSuppressionActivity"
+    android:orientation="vertical"
+    android:id="@+id/fullscreen_content">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:id="@+id/fullscreen_content">
+    <com.joanzapata.pdfview.PDFView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/pdfview"/>
 
-
-        <com.joanzapata.pdfview.PDFView
-            android:id="@+id/pdfview"
-            android:layout_width="200dp"
-            android:layout_height="300dp"
-            android:layout_centerInParent="true"/>
-
-
-        <!--<ImageView-->
-            <!--android:id="@+id/bookImg"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:src="@drawable/ic_launcher"-->
-            <!--android:layout_marginLeft="60dip"-->
-            <!--android:layout_marginTop="150dip" />-->
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
+    <LinearLayout
+        style="?metaButtonBarStyle"
+        tools:ignore="UselessParent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_gravity="center_horizontal|top">
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/black_overlay"
+        android:orientation="horizontal"
+        android:id="@+id/fullscreen_content_controls"/>
+</RelativeLayout>
 
-</FrameLayout>

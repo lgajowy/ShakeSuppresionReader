@@ -6,8 +6,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.Window;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.joanzapata.pdfview.PDFView;
 import com.shakeSuppression.app.fullscreen.FullscreenView;
@@ -20,36 +22,60 @@ public class ShakeSuppressionActivity extends Activity {
     private FullscreenView fullscreen;
     private SensorManager sensorManager;
     private ShakeEventListener shakeListener;
+    private PDFView pdfView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        shakeListener = new ShakeEventListener(new AnimationController(findViewById(R.id.pdfview)));
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         fullscreen = new FullscreenView(this, findViewById(R.id.fullscreen_content_controls),
                 findViewById(R.id.fullscreen_content));
+        pdfView = (PDFView) findViewById(R.id.pdfview);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shake_suppression_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toggleSuppression:
+                toggleSuppression(item);
+                return true;
+            case R.id.openFile:
+                loadPdfFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/czerwony.pdf", 0);
+                Toast.makeText(getApplicationContext(), getString(R.string.notSupportedMsg), Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return false;
+        }
+    }
 
-        File dir = new File(downloads.getAbsolutePath() + "/SR_czesc_1.pdf");
+    private void toggleSuppression(MenuItem item) {
+        if (!item.isChecked()) {
+            item.setChecked(true);
+            sensorManager.registerListener(shakeListener, sensorManager
+                    .getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_FASTEST);
+        } else {
+            item.setChecked(false);
+            sensorManager.unregisterListener(shakeListener);
+        }
+    }
 
-        com.joanzapata.pdfview.PDFView pdfView = (PDFView) findViewById(R.id.pdfview);
-
-
-        pdfView.fromFile(dir)
-                .pages(0, 2, 1, 3, 3, 3)
-                .defaultPage(1)
+    private void loadPdfFile(String path, int onPage) {
+        pdfView.fromFile(new File(path))
+                .defaultPage(onPage)
                 .showMinimap(false)
                 .enableSwipe(true)
                 .load();
-
-        shakeListener = new ShakeEventListener(new AnimationController(findViewById(R.id.pdfview)));
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensorManager.registerListener(shakeListener, sensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL); // (2)
     }
 
     @Override
