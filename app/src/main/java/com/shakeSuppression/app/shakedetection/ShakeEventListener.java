@@ -29,7 +29,7 @@ public class ShakeEventListener implements SensorEventListener {
         if ((!shakeInitiated) && isAccelerationChanged(delta)) {
             shakeInitiated = true;
         } else if ((shakeInitiated) && isAccelerationChanged(delta)) {
-            animationController.executeSuppresionAnimation(delta);
+            animationController.executeSuppresionAnimation(delta, 500);
         } else if ((shakeInitiated) && (!isAccelerationChanged(delta))) {
             shakeInitiated = false;
         }

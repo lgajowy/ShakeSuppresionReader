@@ -10,13 +10,15 @@ public class AnimationController {
 
     private static final String TAG = "ANIMATION";
     private View animatedView;
+    private Suppression supression;
 
     public AnimationController(View animatedView) {
         this.animatedView = animatedView;
+        this.supression = new Suppression();
     }
 
-    public void executeSuppresionAnimation(Coordinates delta) {
+    public void executeSuppresionAnimation(Coordinates delta, int duration) {
         Log.d(TAG, "" + delta.x + " " + delta.y);
-        Suppression.animate(animatedView, delta.x * 100, delta.y * 100, 500);
+        supression.animate(animatedView, delta.x * 100, delta.y * 100, duration);
     }
 }

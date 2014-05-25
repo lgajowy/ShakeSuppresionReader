@@ -6,7 +6,7 @@ import android.view.animation.TranslateAnimation;
 
 public class Suppression {
 
-    public static void animate(View view, float deltaX, float deltaY, int duration) {
+    public void animate(View view, float deltaX, float deltaY, int duration) {
         int originalPos[] = new int[2];
         view.getLocationOnScreen(originalPos);
 
@@ -15,7 +15,7 @@ public class Suppression {
         view.startAnimation(anim);
     }
 
-    private static void setAnimationConstraints(int duration, TranslateAnimation anim) {
+    private void setAnimationConstraints(int duration, TranslateAnimation anim) {
         anim.setRepeatCount(1);
         anim.setRepeatMode(Animation.REVERSE);
         anim.setDuration(duration);
