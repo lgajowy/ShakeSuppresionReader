@@ -62,7 +62,7 @@ public class ShakeSuppressionActivity extends Activity {
         if (!item.isChecked()) {
             item.setChecked(true);
             sensorManager.registerListener(shakeListener, sensorManager
-                    .getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
                     SensorManager.SENSOR_DELAY_FASTEST);
         } else {
             item.setChecked(false);

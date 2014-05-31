@@ -18,7 +18,9 @@ public class AnimationController {
     }
 
     public void executeSuppresionAnimation(Coordinates delta, int duration) {
-        Log.d(TAG, "" + delta.x + " " + delta.y);
-        supression.animate(animatedView, delta.x * 100, delta.y * 100, duration);
+        Log.d(TAG, "animation" +  "x = " + delta.x);
+        Log.d(TAG, "animation" +  "y = " + delta.y);
+        Log.d(TAG, "animation" +  "z = " + delta.z);
+        supression.animate(animatedView, -1 * (delta.x * 70), -1 * (delta.y * 70), duration);
     }
 }

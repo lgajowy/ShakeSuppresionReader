@@ -21,4 +21,6 @@ public class Suppression {
         anim.setDuration(duration);
         anim.setFillAfter(true);
     }
+
+
 }
