@@ -3,10 +3,11 @@ package com.shakeSuppression.app.shakedetection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.support.v7.appcompat.R;
 
 import com.shakeSuppression.app.animation.ShakeAnimationController;
 import com.shakeSuppression.app.shakedetection.utils.Coordinates;
-import com.shakeSuppression.app.shakedetection.utils.ViewCoordinates;
+import com.shakeSuppression.app.shakedetection.utils.DisplayCoordinates;
 
 import java.util.Timer;
 
@@ -17,14 +18,15 @@ public class ShakeEventListener implements SensorEventListener {
     private Coordinates previousAcceleration;
 
     private boolean firstUpdate = true;
-    private final float shakeThreshold = 0.5f;
+    private final float shakeThreshold = 0.4f;
     private boolean shakeInitiated = false;
     private float[] accelerationValues = new float[3];
 
     public ShakeEventListener(ShakeAnimationController animationController) {
         this.animationController = animationController;
         Timer t = new Timer();
-        t.scheduleAtFixedRate(new ViewCoordinates(accelerationValues), 1000, 500);
+        t.scheduleAtFixedRate(new DisplayCoordinates(accelerationValues), 1000, 500);
+        animationController.setProbesToTake(4);
     }
 
     @Override
@@ -37,8 +39,10 @@ public class ShakeEventListener implements SensorEventListener {
         if ((!shakeInitiated) && isAccelerationChanged(delta)) {
             shakeInitiated = true;
         } else if ((shakeInitiated) && isAccelerationChanged(delta)) {
-            animationController.executeSuppresionAnimation(delta, 500);
+            animationController.takeNConsecutiveProbesAndExecuteAnimation(delta, 500);
+            //animationController.executeSuppresionAnimation(delta, 500);
         } else if ((shakeInitiated) && (!isAccelerationChanged(delta))) {
+            animationController.triggerAnimation(500);
             shakeInitiated = false;
         }
     }

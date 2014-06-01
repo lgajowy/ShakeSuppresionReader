@@ -4,11 +4,11 @@ import android.util.Log;
 
 import java.util.TimerTask;
 
-public class ViewCoordinates extends TimerTask {
+public class DisplayCoordinates extends TimerTask {
 
     private float[] values;
 
-    public ViewCoordinates(float[] values) {
+    public DisplayCoordinates(float[] values) {
         this.values = values;
     }
 
