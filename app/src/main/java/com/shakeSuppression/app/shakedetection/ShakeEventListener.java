@@ -3,13 +3,12 @@ package com.shakeSuppression.app.shakedetection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.util.Log;
 
 import com.shakeSuppression.app.animation.ShakeAnimationController;
 import com.shakeSuppression.app.shakedetection.utils.Coordinates;
+import com.shakeSuppression.app.shakedetection.utils.ViewCoordinates;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ShakeEventListener implements SensorEventListener {
 
@@ -20,19 +19,19 @@ public class ShakeEventListener implements SensorEventListener {
     private boolean firstUpdate = true;
     private final float shakeThreshold = 0.5f;
     private boolean shakeInitiated = false;
-    private float[] accelVals = new float[3];
+    private float[] accelerationValues = new float[3];
 
     public ShakeEventListener(ShakeAnimationController animationController) {
         this.animationController = animationController;
         Timer t = new Timer();
-        t.scheduleAtFixedRate(new viewCoord(), 1000, 500);
+        t.scheduleAtFixedRate(new ViewCoordinates(accelerationValues), 1000, 500);
     }
 
     @Override
     public void onSensorChanged(SensorEvent se) {
-        accelVals = lowPass(se.values.clone(), accelVals);
+        accelerationValues = lowPass(se.values.clone(), accelerationValues);
 
-        updateAccelParameters(new Coordinates(accelVals[0], accelVals[1], accelVals[2]));
+        updateAccelParameters(new Coordinates(accelerationValues[0], accelerationValues[1], accelerationValues[2]));
         Coordinates delta = countDelta(previousAcceleration, actualAcceleration);
 
         if ((!shakeInitiated) && isAccelerationChanged(delta)) {
@@ -51,10 +50,6 @@ public class ShakeEventListener implements SensorEventListener {
             output[i] = output[i] + ALPHA * (input[i] - output[i]);
         }
         return output;
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
     }
 
     private void updateAccelParameters(Coordinates newAcceleration) {
@@ -78,17 +73,7 @@ public class ShakeEventListener implements SensorEventListener {
         return new Coordinates(a.x - b.x, a.y - b.y, a.z - b.z);
     }
 
-    class viewCoord extends TimerTask {
-        public void run() {
-            Log.d("+++", "============================================");
-            Log.d("ACC", "x = " + accelVals[0]);
-            Log.d("ACC", "y = " + accelVals[1]);
-            Log.d("ACC", "z = " + accelVals[2]);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
     }
 }
