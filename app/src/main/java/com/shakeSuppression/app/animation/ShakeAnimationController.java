@@ -1,20 +1,19 @@
-package com.shakeSuppression.app;
+package com.shakeSuppression.app.animation;
 
 import android.util.Log;
 import android.view.View;
 
-import com.shakeSuppression.app.animation.Suppression;
 import com.shakeSuppression.app.shakedetection.utils.Coordinates;
 
-public class AnimationController {
+public class ShakeAnimationController {
 
     private static final String TAG = "ANIMATION";
     private View animatedView;
-    private Suppression supression;
+    private SuppressionAnimation supression;
 
-    public AnimationController(View animatedView) {
+    public ShakeAnimationController(View animatedView) {
         this.animatedView = animatedView;
-        this.supression = new Suppression();
+        this.supression = new SuppressionAnimation();
     }
 
     public void executeSuppresionAnimation(Coordinates delta, int duration) {

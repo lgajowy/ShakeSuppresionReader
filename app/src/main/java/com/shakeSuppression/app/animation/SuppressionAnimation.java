@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
-public class Suppression {
+public class SuppressionAnimation {
 
     public void animate(View view, float deltaX, float deltaY, int duration) {
         int originalPos[] = new int[2];

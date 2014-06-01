@@ -5,7 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
-import com.shakeSuppression.app.AnimationController;
+import com.shakeSuppression.app.animation.ShakeAnimationController;
 import com.shakeSuppression.app.shakedetection.utils.Coordinates;
 
 import java.util.Timer;
@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class ShakeEventListener implements SensorEventListener {
 
-    private AnimationController animationController;
+    private ShakeAnimationController animationController;
     private Coordinates actualAcceleration;
     private Coordinates previousAcceleration;
 
@@ -22,7 +22,7 @@ public class ShakeEventListener implements SensorEventListener {
     private boolean shakeInitiated = false;
     private float[] accelVals = new float[3];
 
-    public ShakeEventListener(AnimationController animationController) {
+    public ShakeEventListener(ShakeAnimationController animationController) {
         this.animationController = animationController;
         Timer t = new Timer();
         t.scheduleAtFixedRate(new viewCoord(), 1000, 500);
@@ -72,7 +72,6 @@ public class ShakeEventListener implements SensorEventListener {
         return (absDelta.x > shakeThreshold && absDelta.y > shakeThreshold)
                 || (absDelta.x > shakeThreshold && absDelta.z > shakeThreshold)
                 || (absDelta.y > shakeThreshold && absDelta.z > shakeThreshold);
-//        return (absDelta.x > shakeThreshold || absDelta.y > shakeThreshold || absDelta.z > shakeThreshold);
     }
 
     private Coordinates countDelta(Coordinates a, Coordinates b) {

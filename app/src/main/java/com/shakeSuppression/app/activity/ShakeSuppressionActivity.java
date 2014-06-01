@@ -1,39 +1,34 @@
-package com.shakeSuppression.app;
+package com.shakeSuppression.app.activity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.joanzapata.pdfview.PDFView;
+import com.shakeSuppression.app.R;
+import com.shakeSuppression.app.shakedetection.ShakeManager;
 import com.shakeSuppression.app.fullscreen.FullscreenView;
-import com.shakeSuppression.app.shakedetection.ShakeEventListener;
-
-import java.io.File;
+import com.shakeSuppression.app.pdfview.PdfViewController;
 
 public class ShakeSuppressionActivity extends Activity {
 
     private FullscreenView fullscreen;
-    private SensorManager sensorManager;
-    private ShakeEventListener shakeListener;
-    private PDFView pdfView;
+    private ShakeManager shakeManager;
+    private PdfViewController pdfViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shakeListener = new ShakeEventListener(new AnimationController(findViewById(R.id.pdfview)));
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         fullscreen = new FullscreenView(this, findViewById(R.id.fullscreen_content_controls),
                 findViewById(R.id.fullscreen_content));
-        pdfView = (PDFView) findViewById(R.id.pdfview);
+        PDFView pdfView = (PDFView) findViewById(R.id.pdfview);
+        shakeManager = new ShakeManager(this.getApplicationContext(), pdfView);
+        pdfViewController = new PdfViewController(pdfView);
     }
 
     @Override
@@ -50,8 +45,7 @@ public class ShakeSuppressionActivity extends Activity {
                 toggleSuppression(item);
                 return true;
             case R.id.openFile:
-                loadPdfFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/czerwony.pdf", 0);
-                Toast.makeText(getApplicationContext(), getString(R.string.notSupportedMsg), Toast.LENGTH_SHORT).show();
+                pdfViewController.loadPdfFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/czerwony.pdf", 0);
                 return true;
             default:
                 return false;
@@ -61,21 +55,11 @@ public class ShakeSuppressionActivity extends Activity {
     private void toggleSuppression(MenuItem item) {
         if (!item.isChecked()) {
             item.setChecked(true);
-            sensorManager.registerListener(shakeListener, sensorManager
-                    .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-                    SensorManager.SENSOR_DELAY_FASTEST);
+            shakeManager.turnOnShakeDetection();
         } else {
             item.setChecked(false);
-            sensorManager.unregisterListener(shakeListener);
+            shakeManager.turnOffShakeDetection();
         }
-    }
-
-    private void loadPdfFile(String path, int onPage) {
-        pdfView.fromFile(new File(path))
-                .defaultPage(onPage)
-                .showMinimap(false)
-                .enableSwipe(true)
-                .load();
     }
 
     @Override

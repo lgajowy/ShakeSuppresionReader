@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:layout_gravity="center_horizontal|top"
     android:background="#ff8298af"
-    tools:context="com.shakeSuppression.app.ShakeSuppressionActivity"
+    tools:context="com.shakeSuppression.app.activity.ShakeSuppressionActivity"
     android:orientation="vertical"
     android:id="@+id/fullscreen_content">
 
