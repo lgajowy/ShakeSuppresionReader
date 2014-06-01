@@ -3,7 +3,7 @@ package com.shakeSuppression.app.animation;
 import android.util.Log;
 import android.view.View;
 
-import com.shakeSuppression.app.shakedetection.utils.Coordinates;
+import com.shakeSuppression.app.shakedetection.utils.Vector3D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +12,19 @@ public class ShakeAnimationController {
 
     private static final String TAG = "ANIMATION";
     private SuppressionAnimation suppression;
-    private List<Coordinates> probesToTake;
+    private List<Vector3D> probesToTake;
     private int amountOfProbes;
 
     public ShakeAnimationController(View animatedView) {
         this.suppression = new SuppressionAnimation(animatedView);
-        probesToTake = new ArrayList<Coordinates>();
+        probesToTake = new ArrayList<Vector3D>();
     }
 
     public void setProbesToTake(int amountOfProbes) {
         this.amountOfProbes = amountOfProbes;
     }
 
-    public synchronized void takeNConsecutiveProbesAndExecuteAnimation(Coordinates deltaXYZ) {
+    public synchronized void takeNConsecutiveProbesAndExecuteAnimation(Vector3D deltaXYZ) {
         if (probesToTake.size() < amountOfProbes) {
             probesToTake.add(deltaXYZ);
         } else {
@@ -34,25 +34,28 @@ public class ShakeAnimationController {
 
     public void triggerAnimation() {
         if (!(probesToTake.size() == 0)) {
-            Coordinates averagedDelta = averageProbes();
-            probesToTake = new ArrayList<Coordinates>();
-            executeSuppresionAnimation(averagedDelta, ShakeParameters.SHAKE_DURATION);
+            Vector3D averagedDelta = averageProbes();
+            probesToTake = new ArrayList<Vector3D>();
+            //TODO: HOW TO GET SPEED??
+            //int duration = (int) (ShakeParameters.ANIMATION_DURATION / Math.sqrt((averagedDelta.x * averagedDelta.x) + (averagedDelta.y * averagedDelta.y)));
+            executeSuppressionAnimation(averagedDelta, ShakeParameters.ANIMATION_DURATION);
         }
     }
 
-    public Coordinates averageProbes() {
-        Coordinates result = new Coordinates();
-        for (Coordinates probe : probesToTake) {
+    public Vector3D averageProbes() {
+        Vector3D result = new Vector3D();
+        for (Vector3D probe : probesToTake) {
             result.add(probe);
         }
         return result.divide(probesToTake.size());
     }
 
-    public void executeSuppresionAnimation(Coordinates delta, int duration) {
+    public void executeSuppressionAnimation(Vector3D delta, int duration) {
         if (suppression.getState() == AnimationState.NotRunning) {
-            suppression.animate(-1 * delta.x , -1 * delta.y , duration);
+            Vector3D reversedDirectionDelta = delta.divide(-1);
+            suppression.animate(reversedDirectionDelta.x , reversedDirectionDelta.y , duration);
         } else {
-            Log.d(TAG, "ANIMATION IS WORKING NOW!");
+            Log.d(TAG, "ANIMATION IS BUSY!");
         }
     }
 }
