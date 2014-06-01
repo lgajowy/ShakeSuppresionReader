@@ -17,8 +17,8 @@ public class SuppressionAnimation {
     public void animate( float deltaX, float deltaY, int duration) {
         int originalPos[] = new int[2];
         animatedView.getLocationOnScreen(originalPos);
-        int shiftX = (int) (animatedView.getWidth() * deltaX * ShakeParameters.SHAKE_MAGNITUDE_MULTIPLIER);
-        int shiftY = (int) (animatedView.getHeight() * deltaY * ShakeParameters.SHAKE_MAGNITUDE_MULTIPLIER);
+        int shiftX = (int) (animatedView.getWidth() * deltaX * ShakeParameters.SHAKE_X_MAGNITUDE_MULTIPLIER);
+        int shiftY = (int) (animatedView.getHeight() * deltaY * ShakeParameters.SHAKE_Y_MAGNITUDE_MULTIPLIER);
 
         TranslateAnimation anim = new TranslateAnimation(0, shiftX, 0, shiftY);
         anim.setAnimationListener(new AnimationListener());

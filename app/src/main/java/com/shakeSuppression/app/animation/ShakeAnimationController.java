@@ -50,9 +50,9 @@ public class ShakeAnimationController {
 
     public void executeSuppresionAnimation(Coordinates delta, int duration) {
         if (suppression.getState() == AnimationState.NotRunning) {
-            suppression.animate(-1 * delta.x, -1 * delta.y , duration);
+            suppression.animate(-1 * delta.x , -1 * delta.y , duration);
         } else {
-            Log.d(TAG, " ANIMATION IS WORKING NOW!");
+            Log.d(TAG, "ANIMATION IS WORKING NOW!");
         }
     }
 }

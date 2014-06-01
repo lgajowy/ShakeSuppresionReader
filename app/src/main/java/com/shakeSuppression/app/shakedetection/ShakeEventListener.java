@@ -65,9 +65,10 @@ public class ShakeEventListener implements SensorEventListener {
 
     private boolean isAccelerationChanged(Coordinates delta) {
         Coordinates absDelta = delta.abs();
-        return (absDelta.x > ShakeParameters.SHAKE_THRESHOLD && absDelta.y > ShakeParameters.SHAKE_THRESHOLD)
-                || (absDelta.x > ShakeParameters.SHAKE_THRESHOLD && absDelta.z > ShakeParameters.SHAKE_THRESHOLD)
-                || (absDelta.y > ShakeParameters.SHAKE_THRESHOLD && absDelta.z > ShakeParameters.SHAKE_THRESHOLD);
+
+        return (absDelta.x > ShakeParameters.SHAKE_THRESHOLD
+                || absDelta.y > ShakeParameters.SHAKE_THRESHOLD
+                || absDelta.z > ShakeParameters.SHAKE_THRESHOLD);
     }
 
     private Coordinates countDelta(Coordinates a, Coordinates b) {
