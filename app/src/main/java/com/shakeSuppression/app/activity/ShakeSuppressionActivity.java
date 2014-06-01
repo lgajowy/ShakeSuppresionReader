@@ -2,10 +2,8 @@ package com.shakeSuppression.app.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +19,7 @@ public class ShakeSuppressionActivity extends Activity {
     private FullscreenView fullscreen;
     private ShakeManager shakeManager;
     private PdfViewController pdfViewController;
-    private String uri ="";
+    private MenuItem suppressionCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +34,8 @@ public class ShakeSuppressionActivity extends Activity {
 
         final Intent intent = getIntent();
         final String action = intent.getAction();
-        if(Intent.ACTION_VIEW.equals(action)){
-            uri = intent.getData().getEncodedPath();
-            pdfViewController.loadPdfFile(uri, 1);
+        if (Intent.ACTION_VIEW.equals(action)) {
+            pdfViewController.loadPdfFile(intent.getData().getEncodedPath(), 1);
         }
     }
 
@@ -46,6 +43,8 @@ public class ShakeSuppressionActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.shake_suppression_activity_menu, menu);
+
+        suppressionCheckbox = menu.getItem(1);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -55,7 +54,7 @@ public class ShakeSuppressionActivity extends Activity {
             case R.id.toggleSuppression:
                 toggleSuppression(item);
                 return true;
-            case R.id.openFile:
+            case R.id.openSampleFile:
                 pdfViewController.loadPdfFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/czerwony.pdf", 0);
                 return true;
             default:
@@ -78,4 +77,20 @@ public class ShakeSuppressionActivity extends Activity {
         super.onPostCreate(savedInstanceState);
         fullscreen.delayedFullscreenHide(100);
     }
+
+    @Override
+    protected void onPause() {
+        shakeManager.turnOffShakeDetection();
+        suppressionCheckbox.setChecked(false);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        shakeManager.turnOffShakeDetection();
+        suppressionCheckbox.setChecked(false);
+        super.onStop();
+    }
+
+
 }

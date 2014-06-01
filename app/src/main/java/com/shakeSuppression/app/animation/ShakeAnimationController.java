@@ -37,8 +37,9 @@ public class ShakeAnimationController {
             Vector3D averagedDelta = averageProbes();
             probesToTake = new ArrayList<Vector3D>();
             //TODO: HOW TO GET SPEED??
-            //int duration = (int) (ShakeParameters.ANIMATION_DURATION / Math.sqrt((averagedDelta.x * averagedDelta.x) + (averagedDelta.y * averagedDelta.y)));
+            //int duration = (int) (  Math.sqrt((averagedDelta.x * averagedDelta.x) + (averagedDelta.y * averagedDelta.y)) * ShakeParameters.ANIMATION_DURATION);
             executeSuppressionAnimation(averagedDelta, ShakeParameters.ANIMATION_DURATION);
+            //executeSuppressionAnimation(averagedDelta, duration);
         }
     }
 
