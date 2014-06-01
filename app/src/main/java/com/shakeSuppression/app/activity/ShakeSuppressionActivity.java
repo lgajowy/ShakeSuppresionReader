@@ -81,14 +81,18 @@ public class ShakeSuppressionActivity extends Activity {
     @Override
     protected void onPause() {
         shakeManager.turnOffShakeDetection();
-        suppressionCheckbox.setChecked(false);
+        if (suppressionCheckbox != null) {
+            suppressionCheckbox.setChecked(false);
+        }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
         shakeManager.turnOffShakeDetection();
-        suppressionCheckbox.setChecked(false);
+        if (suppressionCheckbox != null) {
+            suppressionCheckbox.setChecked(false);
+        }
         super.onStop();
     }
 
