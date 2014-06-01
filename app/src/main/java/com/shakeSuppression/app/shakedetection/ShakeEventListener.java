@@ -3,9 +3,9 @@ package com.shakeSuppression.app.shakedetection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.support.v7.appcompat.R;
 
 import com.shakeSuppression.app.animation.ShakeAnimationController;
+import com.shakeSuppression.app.animation.ShakeParameters;
 import com.shakeSuppression.app.shakedetection.utils.Coordinates;
 import com.shakeSuppression.app.shakedetection.utils.DisplayCoordinates;
 
@@ -18,7 +18,6 @@ public class ShakeEventListener implements SensorEventListener {
     private Coordinates previousAcceleration;
 
     private boolean firstUpdate = true;
-    private final float shakeThreshold = 0.4f;
     private boolean shakeInitiated = false;
     private float[] accelerationValues = new float[3];
 
@@ -26,7 +25,7 @@ public class ShakeEventListener implements SensorEventListener {
         this.animationController = animationController;
         Timer t = new Timer();
         t.scheduleAtFixedRate(new DisplayCoordinates(accelerationValues), 1000, 500);
-        animationController.setProbesToTake(4);
+        animationController.setProbesToTake(ShakeParameters.PROBES_FOR_AVERGING);
     }
 
     @Override
@@ -39,19 +38,17 @@ public class ShakeEventListener implements SensorEventListener {
         if ((!shakeInitiated) && isAccelerationChanged(delta)) {
             shakeInitiated = true;
         } else if ((shakeInitiated) && isAccelerationChanged(delta)) {
-            animationController.takeNConsecutiveProbesAndExecuteAnimation(delta, 500);
-            //animationController.executeSuppresionAnimation(delta, 500);
+            animationController.takeNConsecutiveProbesAndExecuteAnimation(delta);
         } else if ((shakeInitiated) && (!isAccelerationChanged(delta))) {
-            animationController.triggerAnimation(500);
+            animationController.triggerAnimation();
             shakeInitiated = false;
         }
     }
 
-    float ALPHA = 0.5f;
     protected float[] lowPass(float[] input, float[] output) {
         if (output == null) return input;
         for (int i = 0; i < input.length; i++) {
-            output[i] = output[i] + ALPHA * (input[i] - output[i]);
+            output[i] = output[i] + ShakeParameters.LOW_PASS_ALPHA * (input[i] - output[i]);
         }
         return output;
     }
@@ -68,9 +65,9 @@ public class ShakeEventListener implements SensorEventListener {
 
     private boolean isAccelerationChanged(Coordinates delta) {
         Coordinates absDelta = delta.abs();
-        return (absDelta.x > shakeThreshold && absDelta.y > shakeThreshold)
-                || (absDelta.x > shakeThreshold && absDelta.z > shakeThreshold)
-                || (absDelta.y > shakeThreshold && absDelta.z > shakeThreshold);
+        return (absDelta.x > ShakeParameters.SHAKE_THRESHOLD && absDelta.y > ShakeParameters.SHAKE_THRESHOLD)
+                || (absDelta.x > ShakeParameters.SHAKE_THRESHOLD && absDelta.z > ShakeParameters.SHAKE_THRESHOLD)
+                || (absDelta.y > ShakeParameters.SHAKE_THRESHOLD && absDelta.z > ShakeParameters.SHAKE_THRESHOLD);
     }
 
     private Coordinates countDelta(Coordinates a, Coordinates b) {

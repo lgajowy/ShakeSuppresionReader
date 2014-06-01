@@ -11,36 +11,32 @@ import java.util.List;
 public class ShakeAnimationController {
 
     private static final String TAG = "ANIMATION";
-    private View animatedView;
-    private SuppressionAnimation supression;
-
+    private SuppressionAnimation suppression;
     private List<Coordinates> probesToTake;
     private int amountOfProbes;
 
     public ShakeAnimationController(View animatedView) {
-        this.animatedView = animatedView;
-        this.supression = new SuppressionAnimation();
+        this.suppression = new SuppressionAnimation(animatedView);
         probesToTake = new ArrayList<Coordinates>();
     }
-
 
     public void setProbesToTake(int amountOfProbes) {
         this.amountOfProbes = amountOfProbes;
     }
 
-    public synchronized void takeNConsecutiveProbesAndExecuteAnimation(Coordinates deltaXYZ, int animationDuration) {
+    public synchronized void takeNConsecutiveProbesAndExecuteAnimation(Coordinates deltaXYZ) {
         if (probesToTake.size() < amountOfProbes) {
             probesToTake.add(deltaXYZ);
         } else {
-            triggerAnimation(animationDuration);
+            triggerAnimation();
         }
     }
 
-    public void triggerAnimation(int animationDuration) {
+    public void triggerAnimation() {
         if (!(probesToTake.size() == 0)) {
             Coordinates averagedDelta = averageProbes();
             probesToTake = new ArrayList<Coordinates>();
-            executeSuppresionAnimation(averagedDelta, animationDuration);
+            executeSuppresionAnimation(averagedDelta, ShakeParameters.SHAKE_DURATION);
         }
     }
 
@@ -53,13 +49,10 @@ public class ShakeAnimationController {
     }
 
     public void executeSuppresionAnimation(Coordinates delta, int duration) {
-        if (supression.getState() == AnimationState.NotRunning) {
-            Log.d(TAG, "animation" + "x = " + delta.x);
-            Log.d(TAG, "animation" + "y = " + delta.y);
-            Log.d(TAG, "animation" + "z = " + delta.z);
-            supression.animate(animatedView, -1 * (delta.x * 70), -1 * (delta.y * 70), duration);
+        if (suppression.getState() == AnimationState.NotRunning) {
+            suppression.animate(-1 * delta.x, -1 * delta.y , duration);
         } else {
-            Log.d(TAG, "animation" + " ANIMATION WORKS! WAIT!!!!!");
+            Log.d(TAG, " ANIMATION IS WORKING NOW!");
         }
     }
 }

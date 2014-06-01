@@ -9,9 +9,9 @@ import android.view.MenuItem;
 
 import com.joanzapata.pdfview.PDFView;
 import com.shakeSuppression.app.R;
-import com.shakeSuppression.app.shakedetection.ShakeManager;
 import com.shakeSuppression.app.fullscreen.FullscreenView;
 import com.shakeSuppression.app.pdfview.PdfViewController;
+import com.shakeSuppression.app.shakedetection.ShakeManager;
 
 public class ShakeSuppressionActivity extends Activity {
 

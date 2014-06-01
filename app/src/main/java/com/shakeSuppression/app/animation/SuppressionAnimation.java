@@ -7,21 +7,24 @@ import android.view.animation.TranslateAnimation;
 public class SuppressionAnimation {
 
     private AnimationState state;
+    private View animatedView;
 
-    public SuppressionAnimation() {
+    public SuppressionAnimation(View view) {
         state = AnimationState.NotRunning;
-
+        this.animatedView = view;
     }
 
-    public void animate(View view, float deltaX, float deltaY, int duration) {
+    public void animate( float deltaX, float deltaY, int duration) {
         int originalPos[] = new int[2];
-        view.getLocationOnScreen(originalPos);
+        animatedView.getLocationOnScreen(originalPos);
+        int shiftX = (int) (animatedView.getWidth() * deltaX * ShakeParameters.SHAKE_MAGNITUDE_MULTIPLIER);
+        int shiftY = (int) (animatedView.getHeight() * deltaY * ShakeParameters.SHAKE_MAGNITUDE_MULTIPLIER);
 
-        TranslateAnimation anim = new TranslateAnimation(0, deltaX, 0, deltaY);
+        TranslateAnimation anim = new TranslateAnimation(0, shiftX, 0, shiftY);
         anim.setAnimationListener(new AnimationListener());
         setAnimationConstraints(duration, anim);
         if(state == AnimationState.NotRunning) {
-            view.startAnimation(anim);
+            animatedView.startAnimation(anim);
         }
     }
 
