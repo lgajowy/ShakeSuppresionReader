@@ -1,8 +1,11 @@
 package com.shakeSuppression.app.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ public class ShakeSuppressionActivity extends Activity {
     private FullscreenView fullscreen;
     private ShakeManager shakeManager;
     private PdfViewController pdfViewController;
+    private String uri ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,13 @@ public class ShakeSuppressionActivity extends Activity {
         PDFView pdfView = (PDFView) findViewById(R.id.pdfview);
         shakeManager = new ShakeManager(this.getApplicationContext(), pdfView);
         pdfViewController = new PdfViewController(pdfView);
+
+        final Intent intent = getIntent();
+        final String action = intent.getAction();
+        if(Intent.ACTION_VIEW.equals(action)){
+            uri = intent.getData().getEncodedPath();
+            pdfViewController.loadPdfFile(uri, 1);
+        }
     }
 
     @Override

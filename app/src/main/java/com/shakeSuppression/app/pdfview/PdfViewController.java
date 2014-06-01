@@ -20,5 +20,6 @@ public class PdfViewController {
                 .showMinimap(false)
                 .enableSwipe(true)
                 .load();
+
     }
 }
