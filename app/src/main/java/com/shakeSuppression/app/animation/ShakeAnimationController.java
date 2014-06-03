@@ -36,10 +36,7 @@ public class ShakeAnimationController {
         if (!(probesToTake.size() == 0)) {
             Vector3D averagedDelta = averageProbes();
             probesToTake = new ArrayList<Vector3D>();
-            //TODO: HOW TO GET SPEED??
-            //int duration = (int) (  Math.sqrt((averagedDelta.x * averagedDelta.x) + (averagedDelta.y * averagedDelta.y)) * ShakeParameters.ANIMATION_DURATION);
             executeSuppressionAnimation(averagedDelta, ShakeParameters.ANIMATION_DURATION);
-            //executeSuppressionAnimation(averagedDelta, duration);
         }
     }
 
@@ -55,8 +52,6 @@ public class ShakeAnimationController {
         if (suppression.getState() == AnimationState.NotRunning) {
             Vector3D reversedDirectionDelta = delta.divide(-1);
             suppression.animate(reversedDirectionDelta.x , reversedDirectionDelta.y , duration);
-        } else {
-            Log.d(TAG, "ANIMATION IS BUSY!");
         }
     }
 }

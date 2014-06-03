@@ -1,4 +1,4 @@
-package com.shakeSuppression.app.fullscreen;
+package com.shakesuppression.fullscreen.view;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -6,7 +6,7 @@ import android.view.View;
 
 public class FullscreenView {
 
-    private static final int AUTO_HIDE_DELAY_MILLIS = 4000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 2000;
     private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
 
     private SystemUiHider systemUiHider;

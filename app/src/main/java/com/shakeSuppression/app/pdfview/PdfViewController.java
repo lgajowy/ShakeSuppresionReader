@@ -6,8 +6,6 @@ import java.io.File;
 
 public class PdfViewController {
 
-    private final String TAG = this.getClass().getName();
-
     private PDFView pdfView;
 
     public PdfViewController(PDFView pdfView) {
@@ -20,6 +18,5 @@ public class PdfViewController {
                 .showMinimap(false)
                 .enableSwipe(true)
                 .load();
-
     }
 }

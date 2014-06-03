@@ -28,13 +28,13 @@ public class ShakeEventListener implements SensorEventListener {
         accelerationValues = lowPass(se.values.clone(), accelerationValues);
 
         updateAccelParameters(new Vector3D(accelerationValues[0], accelerationValues[1], accelerationValues[2]));
-        Vector3D delta = countDelta(previousAcceleration, actualAcceleration);
+        Vector3D delta = Vector3D.countDelta(previousAcceleration, actualAcceleration);
 
-        if ((!shakeInitiated) && isAccelerationChanged(delta)) {
+        if ((!shakeInitiated) && isThresholdExceeded(delta)) {
             shakeInitiated = true;
-        } else if ((shakeInitiated) && isAccelerationChanged(delta)) {
+        } else if ((shakeInitiated) && isThresholdExceeded(delta)) {
             animationController.takeNConsecutiveProbesAndExecuteAnimation(delta);
-        } else if ((shakeInitiated) && (!isAccelerationChanged(delta))) {
+        } else if ((shakeInitiated) && (!isThresholdExceeded(delta))) {
             animationController.triggerAnimation();
             shakeInitiated = false;
         }
@@ -58,15 +58,11 @@ public class ShakeEventListener implements SensorEventListener {
         actualAcceleration = newAcceleration;
     }
 
-    private boolean isAccelerationChanged(Vector3D delta) {
+    private boolean isThresholdExceeded(Vector3D delta) {
         Vector3D absDelta = delta.abs();
         return (absDelta.x > ShakeParameters.SHAKE_THRESHOLD
                 || absDelta.y > ShakeParameters.SHAKE_THRESHOLD
                 || absDelta.z > ShakeParameters.SHAKE_THRESHOLD);
-    }
-
-    private Vector3D countDelta(Vector3D a, Vector3D b) {
-        return new Vector3D(a.x - b.x, a.y - b.y, a.z - b.z);
     }
 
     @Override

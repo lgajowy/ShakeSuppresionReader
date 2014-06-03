@@ -43,5 +43,8 @@ public class Vector3D {
         return this;
     }
 
+    public static Vector3D countDelta(Vector3D a, Vector3D b) {
+        return new Vector3D(a.x - b.x, a.y - b.y, a.z - b.z);
+    }
 
 }

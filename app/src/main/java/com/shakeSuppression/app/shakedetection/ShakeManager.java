@@ -10,11 +10,9 @@ import com.shakeSuppression.app.animation.ShakeAnimationController;
 public class ShakeManager {
 
     private SensorManager sensorManager;
-    private Context context;
     private ShakeEventListener shakeListener;
 
     public ShakeManager(Context context, View shakedView) {
-        this.context = context;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         shakeListener = new ShakeEventListener(new ShakeAnimationController(shakedView));
     }

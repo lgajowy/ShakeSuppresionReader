@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.joanzapata.pdfview.PDFView;
 import com.shakeSuppression.app.R;
-import com.shakeSuppression.app.fullscreen.FullscreenView;
+import com.shakesuppression.fullscreen.view.FullscreenView;
 import com.shakeSuppression.app.pdfview.PdfViewController;
 import com.shakeSuppression.app.shakedetection.ShakeManager;
 
