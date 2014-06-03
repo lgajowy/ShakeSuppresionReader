@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 
 import com.shakeSuppression.app.animation.ShakeAnimationController;
 import com.shakeSuppression.app.animation.ShakeParameters;
+import com.shakeSuppression.app.shakedetection.utils.Filter;
 import com.shakeSuppression.app.shakedetection.utils.Vector3D;
 
 public class ShakeEventListener implements SensorEventListener {
@@ -25,7 +26,7 @@ public class ShakeEventListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent se) {
-        accelerationValues = lowPass(se.values.clone(), accelerationValues);
+        accelerationValues = Filter.lowPass(se.values.clone(), accelerationValues);
 
         updateAccelParameters(new Vector3D(accelerationValues[0], accelerationValues[1], accelerationValues[2]));
         Vector3D delta = Vector3D.countDelta(previousAcceleration, actualAcceleration);
@@ -38,14 +39,6 @@ public class ShakeEventListener implements SensorEventListener {
             animationController.triggerAnimation();
             shakeInitiated = false;
         }
-    }
-
-    protected float[] lowPass(float[] input, float[] output) {
-        if (output == null) return input;
-        for (int i = 0; i < input.length; i++) {
-            output[i] = output[i] + ShakeParameters.LOW_PASS_ALPHA * (input[i] - output[i]);
-        }
-        return output;
     }
 
     private void updateAccelParameters(Vector3D newAcceleration) {
